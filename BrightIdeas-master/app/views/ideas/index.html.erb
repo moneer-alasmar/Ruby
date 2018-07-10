@@ -1,0 +1,34 @@
+<title>Bright Ideas</title>
+
+<h1>Hi, <%= @user.name %></h1>
+<form action="/ideas" method="post">
+    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+  <textarea rows="4" cols="50" name="content">
+Post something witty here!
+</textarea>
+    <br><input type='submit' value='Share Idea!'>
+</form>
+
+<% @ideas.sort_by{|i| i.likes.count}.each.reverse_each do |i| %> 
+ <p><a href="/users/<%= i.user.id %>"><%= i.user.alias %></a>  says: <textarea readonly="readonly"><%= i.content %></textarea> </p>
+ 	<a href="/ideas/<%= i.id %>"><%= i.likes.count %> people</a> like this!</p>
+   <% if current_user == i.user %>
+  <form action='/likes' method='post'>
+  <input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
+  <input type='hidden' name='idea_id' value='<%= i.id %>'>
+  <input type='submit' value="Like">
+  </form>
+
+  <form action="/ideas/<%=i.id%>" method="post">
+    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+    <input type="hidden" name="_method" value="delete">
+    <input type="submit" value="Delete">
+  </form>
+   <% else %>
+            <form action='/likes' method='post'>
+              <input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
+              <input type='hidden' name='idea_id' value='<%= i.id %>'>
+              <input type='submit' class="btn btn-default" value="Like">
+            </form>
+ <% end %>
+ <% end %>
