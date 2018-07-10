@@ -1,6 +1,18 @@
-<h3>Name: <%= @user.name %></h3>
-<h3>Alias: <%= @user.alias %></h3>
-<h3>Email: <%= @user.email %></h3>
-<hr>
-<h2>Total Number of Posts: <%= @user.ideas.count %></h2>
-<h2>Total Number of Likes: <%= @user.likes.count %></h2>
+<div class="jumbotron text-center">
+    <div class="container">
+      <h1 class="text-primary"><%= @user.alias %>'s Profile</h1>
+    </div>
+</div>
+<div class="container">
+  <div class="row" align="center">
+    <div class="col-md-12 text-left">
+        <h4 class="text-primary text-center"><a href="/bright_ideas">Post/View Ideas</a></h4>
+      <h3>Name: <%= @user.name %></h3>
+      <h3>Alias: <%= @user.alias %></h3>
+      <h3>Email: <%= @user.email %></h3>
+      <hr>
+      <h2>Total Number of Posts: <%= @user.ideas.count %></h2>
+      <h2>Total Number of Likes: <%= @user.likes.count %></h2>
+    </div>
+  </div>
+</div>

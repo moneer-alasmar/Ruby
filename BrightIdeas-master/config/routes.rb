@@ -6,9 +6,8 @@ Rails.application.routes.draw do
   resources :sessions
   resources :ideas
   resources :likes
-  root "landing#new"
-  get "main" => "sessions#new"
-  get "landing" => "landing#new"
+  root "landing#index"
+  get "landing" => "landing#index"
   get "bright_ideas" => "ideas#index"
 
   # The priority is based upon order of creation: first created -> highest priority.
