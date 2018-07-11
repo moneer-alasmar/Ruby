@@ -1,5 +1,5 @@
 class SessionsController < ApplicationController
-    def new
+    def index
         # render login page
     end
     def create

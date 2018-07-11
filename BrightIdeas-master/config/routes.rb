@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   root "landing#index"
   get "landing" => "landing#index"
   get "bright_ideas" => "ideas#index"
+  get "main" => "ideas#index"
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
