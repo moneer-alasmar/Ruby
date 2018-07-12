@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   get "landing" => "landing#index"
   get "bright_ideas" => "ideas#index"
   get "main" => "ideas#index"
+  get "logout" => "sessions#destroy"
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
