@@ -1,7 +1,8 @@
 class IdeasController < ApplicationController
-  def index
+	def index
   	@user = User.find(session[:user_id])
-  	@ideas = Idea.all
+		@ideas = Idea.all
+		@randomIdea = Idea.all.shuffle.first
   end
   def show
   	@user = current_user

@@ -14,6 +14,23 @@
 </ul>
 </nav>
 
+<div class="jumbotron text-center">
+<div class="container">
+  <h1><%= @randomIdea.content %></h1>
+  <p>- <%= @randomIdea.user.name %></p>
+  <h4><button type="button" class="btn btn-primary"><span class="badge badge-light"><%= @randomIdea.likes.count %></span> </button> likes</h4>
+  <form action='/likes' method='post'>
+    <input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
+    <input type='hidden' name='idea_id' value='<%= @randomIdea.id %>'>
+    <input type='submit' class="btn btn-primary" value="↑ Like">
+    </form>
+</div>
+</div>
+
+
+
+  
+
 <h1>Hi, <%= @user.name %></h1>
 <form action="/ideas" method="post">
     <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
