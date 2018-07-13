@@ -15,58 +15,106 @@
 </nav>
 
 <div class="jumbotron text-center">
-<div class="container">
-  <h1><%= @randomIdea.content %></h1>
-  <p>- <%= @randomIdea.user.name %></p>
-  <h4><button type="button" class="btn btn-primary"><span class="badge badge-light"><%= @randomIdea.likes.count %></span> </button> likes</h4>
-  <form action='/likes' method='post'>
+  <div class="container">
+    <h1><%= @randomIdea.content %></h1>
+    <p>- <%= @randomIdea.user.name %></p>
+    <h4><button type="button" class="btn btn-primary"><span class="badge badge-light"><%= @randomIdea.likes.count %></span> </button> likes</h4>
+    <form action='/likes' method='post'>
     <input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
     <input type='hidden' name='idea_id' value='<%= @randomIdea.id %>'>
     <input type='submit' class="btn btn-primary" value="↑ Like">
     </form>
+  </div>
 </div>
-</div>
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h1>Hi, <%= @user.name %></h1>
+      <div class="form-group">
+        <form action="/ideas" method="post">
+        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+        <textarea rows="3" class="form-control" name="content" placeholder="Post idea"></textarea>
+        <br>
+        <button type="submit" class="btn btn-primary float-right">Submit</button>
+        </form>
+        </div>
+      </div>
+      <hr>
+
+      <div class="col-md-6" align="center">
+        <hr>
+        <h2>Explore Ideas</h2>
+  <% @ideas.sort_by{|i| i.likes.count}.each.reverse_each do |i| %>
+  <div class="card" style="width: 18rem;">
+      <img class="card-img-top" src="<%= asset_path( 'lightbulb.jpg' ) %>" alt="Card image cap">
+      <div class="card-body">
+        <h5 class="card-title"><%= i.content %></h5>
+        <p class="card-text">-<%= i.user.alias %></p>
+        <h4><button type="button" class="btn btn-primary"><span class="badge badge-light"><%= i.likes.count %></span> </button> likes</h4>
+
+    <% if current_user == i.user %>
+    <form action='/likes' method='post'>
+      <input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
+      <input type='hidden' name='idea_id' value='<%= i.id %>'>
+      <input type='submit' class="btn btn-primary pull-left" value="↑ Like">
+    </form>
+
+    <form action="/ideas/<%=i.id%>" method="post">
+      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+      <input type="hidden" name="_method" value="delete">
+      <input class="btn btn-primary pull-right" type="submit" value="Delete">
+    </form>
+      </div>
+    </div>
+    <% else %>
+    <form action='/likes' method='post'>
+      <input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
+      <input type='hidden' name='idea_id' value='<%= i.id %>'>
+      <input type='submit' class="btn btn-primary pull-left" value="↑ Like">
+    </form>
+    <% end %>
 
 
 
+        
+
+  <p><a href="/users/<%= i.user.id %>"><%= i.user.alias %></a>  says: <textarea readonly="readonly"><%= i.content %></textarea> </p>
+  <a href="/ideas/<%= i.id %>"><%= i.likes.count %> people</a> like this!</p>
+  <% if current_user == i.user %>
+  <div class="form-group">
+    <form action='/likes' method='post'>
+      <input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
+      <input type='hidden' name='idea_id' value='<%= i.id %>'>
+      <input type='submit' value="Like">
+    </form>
+  </div>
   
-
-<h1>Hi, <%= @user.name %></h1>
-<form action="/ideas" method="post">
-    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-  <textarea rows="4" cols="50" name="content">
-Post something witty here!
-</textarea>
-    <br><input type='submit' value='Share Idea!'>
-</form>
-
-<% @ideas.sort_by{|i| i.likes.count}.each.reverse_each do |i| %> 
- <p><a href="/users/<%= i.user.id %>"><%= i.user.alias %></a>  says: <textarea readonly="readonly"><%= i.content %></textarea> </p>
- 	<a href="/ideas/<%= i.id %>"><%= i.likes.count %> people</a> like this!</p>
-   <% if current_user == i.user %>
-  <form action='/likes' method='post'>
-  <input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
-  <input type='hidden' name='idea_id' value='<%= i.id %>'>
-  <input type='submit' value="Like">
-  </form>
-
   <form action="/ideas/<%=i.id%>" method="post">
     <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
     <input type="hidden" name="_method" value="delete">
     <input type="submit" value="Delete">
   </form>
-   <% else %>
-            <form action='/likes' method='post'>
-              <input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
-              <input type='hidden' name='idea_id' value='<%= i.id %>'>
-              <input type='submit' class="btn btn-default" value="Like">
-            </form>
- <% end %>
- <% end %>
+  <% else %>
+  <form action='/likes' method='post'>
+    <input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
+    <input type='hidden' name='idea_id' value='<%= i.id %>'>
+    <input type='submit' class="btn btn-default" value="Like">
+  </form>
+  <% end %>
+  <% end %>
+  
+  <form action="/sessions/<%=current_user.id%>" method="post">
+    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+    <input type="hidden" name="_method" value="delete">
+    <input type="submit" value="Log Out">
+  </form>
+  
+  
+  
+</div>
+</div>
+</div>
 
- <form action="/sessions/<%=current_user.id%>" method="post">
- <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
- <input type="hidden" name="_method" value="delete">
- <input type="submit" value="Log Out">
-</form>
-
+  
